@@ -373,27 +373,40 @@ class Breadcrumb_Trail {
 				}
 
 				if (get_post_type() == 'documento_pubblico') {
-					$this->items[] =  "<a href='".home_url("documento_pubblico")."'>".__("Documenti pubblici", "design_comuni_italia")."</a>";
-					$terms = get_the_terms(get_the_ID(),'tipi_documento');
-					if($terms){
-					  foreach ($terms as $term) {
-						  $this->items[] = sprintf( '<a href="%s">%s</a>', esc_url( get_term_link( $term, 'tipi_documento' ) ), $term->name );
-					  }
-					}
-					$this->items[] = get_the_title();
-					return;
-				}
+    // Add a link to "Amministrazione"
+    $this->items[] = "<a href='" . home_url("amministrazione") . "'>" . __("Amministrazione", "design_comuni_italia") . "</a>";
+    
+    // Add a link to "Documenti"
+    $this->items[] = "<a href='" . home_url("documenti") . "'>" . __("Documenti", "design_comuni_italia") . "</a>";
+    
+    // Retrieve the terms associated with the current post in the 'tipi_documento' taxonomy
+    $terms = get_the_terms(get_the_ID(), 'tipi_documento');
+    if ($terms) {
+        foreach ($terms as $term) {
+            // Add a link for each term to the items array
+            $this->items[] = sprintf('<a href="%s">%s</a>', esc_url(get_term_link($term, 'tipi_documento')), $term->name);
+        }
+    }
+    
+    // Add the title of the current post to the items array
+    $this->items[] = get_the_title();
+    
+    // Exit the function
+    return;
+}
 
 			    $group_name = dci_get_group_name(get_post_type());
 			    //console_log($group_name);
 			    switch ($group_name) {
                     case 'Vivere il comune' :
                         $this->items[] =  "<a href='".home_url("vivere-il-comune")."'>".__("Vivere il Comune", "design_comuni_italia")."</a>";
+			$this->items[] = "<a href='".home_url("vivere-il-comune/luoghi")."'>".__("Luoghi", "design_comuni_italia")."</a>";	    
                         $this->items[] = get_the_title();
                         return;
                         break;
                     case 'Amministrazione':
                         $this->items[] =  "<a href='".home_url("amministrazione")."'>".__("Amministrazione", "design_comuni_italia")."</a>";
+			$this->items[] = "<a href='".home_url("amministrazione/ufficio")."'>".__("Ufficio", "design_comuni_italia")."</a>";
                         $this->items[] = get_the_title();
                         return;
                         break;
@@ -404,6 +417,7 @@ class Breadcrumb_Trail {
                         break;
                     case 'Novità':
                         $this->items[] =  "<a href='".home_url("novita")."'>".__("Novità", "design_comuni_italia")."</a>";
+			$this->items[] = "<a href='".home_url("notizie")."'>".__("Notizie", "design_comuni_italia")."</a>";
                         $this->items[] = get_the_title();
                         return;
                         break;
